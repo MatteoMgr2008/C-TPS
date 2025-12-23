@@ -16,7 +16,7 @@ static sem_t s_meccanico, s_stazione;  // Semafori per le risorse "meccanico" e 
 void *arrivo_clienti_officina(void *arg) {
     for(int cliente_officina=0; cliente_officina<dim_coda; cliente_officina++) {
         sem_wait(&s_meccanico); // Il cliente deve aspettare che il meccanico sia disponibile per poter essere servito
-        coda_officina[cliente_officina]=true; // Il primo cliente nella coda potrà parlare con il meccanico e quindi analizzare e succesivamente riparare il suo veicolo (true=analizzare e riparare il veicolo successivo, false=il veicolo del cliente è stato analizzato e riparato)
+        coda_officina[cliente_officina]=true; // Il primo cliente nella coda potrà parlare con il meccanico e quindi analizzare e succesivamente riparare il suo veicolo (true = è possibile analizzare e riparare il veicolo successivo, false = il veicolo del cliente è stato analizzato e riparato)
         printf("\nIl cliente %d entra in officina, dialoga con il meccanico e lascia il suo veicolo a quest'ultimo per poter essere analizzato e successivamente riparato \nVisualizzazione della coda per l'ingresso all'officina meccannica: ", cliente_officina+1);
         for(int elemento_coda=0; elemento_coda<dim_coda; elemento_coda++)
             printf("%d ", coda_officina[elemento_coda]);
@@ -29,6 +29,7 @@ void *arrivo_clienti_officina(void *arg) {
     pthread_exit(0);
 }
 
+// Genera il thread denominato "servizio_riparazione_officina"
 void *servizio_riparazione_officina(void *arg) {
     for(int cliente_officina=0; cliente_officina<dim_coda; cliente_officina++) {
         sem_wait(&s_stazione); // Aspetta che la risorsa "stazione di riparazione e analisi" diventi necessaria
@@ -42,7 +43,7 @@ void *servizio_riparazione_officina(void *arg) {
             printf("%d ", coda_officina[elemento_coda]);
         
         sleep(1);
-        sem_post(&s_meccanico); // Rilascia il meccanico per il cliente successivo
+        sem_post(&s_meccanico); // Rilascia il meccanico per il cliente successivo della coda
     }
     fflush(stdout);
 
