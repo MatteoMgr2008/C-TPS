@@ -1,0 +1,4 @@
+./"Codice in C sul deadlock (senza soluzione)"
+./"Codice in C sul deadlock (con soluzione dei ticket)"
+./"Codice in C sul deadlock (con soluzione senza ticket)"
+./"Codice in C sul produttore-consumatore"
